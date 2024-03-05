@@ -11,7 +11,8 @@ class Config:
     SCREEN_HEIGHT = 2160
     SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
     desired_fps = 60
-    
+    image1 = 'image1.jpg'
+    image2 = 'image2.jpg'
     
 def quit():
     pygame.quit()
@@ -23,8 +24,8 @@ def main():
     pygame.init()
     display = pygame.display.set_mode(Config.SCREEN_SIZE)
     try:
-        imagefile1 = os.path.join('data', 'image1.jpg')
-        imagefile2 = os.path.join('data', 'image2.jpg')
+        imagefile1 = os.path.join('data', Config.image1)
+        imagefile2 = os.path.join('data', Config.image2)
         surf1 = pygame.image.load(imagefile1)
         surf2 = pygame.image.load(imagefile2)
     except IOError as e:
