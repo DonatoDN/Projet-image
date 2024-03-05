@@ -7,7 +7,7 @@ import time
 from pygame.locals import *
 
 class Config:
-    SCREEN_WIDTH = 3840
+    SCREEN_WIDTH = 384000
     SCREEN_HEIGHT = 2160
     SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
     desired_fps = 60
