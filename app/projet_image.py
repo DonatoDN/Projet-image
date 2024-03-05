@@ -24,7 +24,7 @@ def main():
     display = pygame.display.set_mode(Config.SCREEN_SIZE)
     try:
         imagefile1 = os.path.join('data', 'image1.jpg')
-        imagefile2 = os.path.join('data', 'image2.png')
+        imagefile2 = os.path.join('data', 'image2.jpg')
         surf1 = pygame.image.load(imagefile1)
         surf2 = pygame.image.load(imagefile2)
     except IOError as e:
