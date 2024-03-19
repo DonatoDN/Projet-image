@@ -3,16 +3,10 @@ import sys
 import os
 import random
 import time
-
+from config import Config
 from pygame.locals import *
 
-class Config:
-    SCREEN_WIDTH = 3840
-    SCREEN_HEIGHT = 2160
-    SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
-    desired_fps = 60
-    image1 = 'image1.jpg'
-    image2 = 'image2.jpg'
+# utiliser config
     
 def quit():
     pygame.quit()
