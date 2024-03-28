@@ -5,9 +5,24 @@ import random
 import time
 from config import Config
 from pygame.locals import *
+import json
+from datetime import datetime
 
-# utiliser config
-    
+start_date_str = Config.start_dt
+end_date_str = Config.end_dt
+start_date = datetime.strptime(start_date_str, "%Y-%m-%d %H:%M:%S")
+end_date = datetime.strptime(end_date_str, "%Y-%m-%d %H:%M:%S")
+difference = start_date - end_date
+nb_seconds = difference.total_seconds()
+
+path = os.path.join('app','config.py', Config.coords_file)
+json_file = open(path,'r')
+json_string = json_file.read()
+json_file.close()
+
+tuple_coords = [tuple(coords) for coords in json.loads(json_string)]
+
+
 def quit():
     pygame.quit()
     sys.exit()
@@ -62,3 +77,7 @@ def main():
         clock.tick(Config.desired_fps)
         
 main()
+
+#selctionner pixels pour changer en couleur (prog du prof)
+#créer des frames précises avec un changement d'un certains nombres de pixels précis
+#faire le backup
