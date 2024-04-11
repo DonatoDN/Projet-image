@@ -8,6 +8,7 @@ from pygame.locals import *
 import json
 from datetime import datetime
 
+#calcul date
 start_date_str = Config.start_dt
 end_date_str = Config.end_dt
 start_date = datetime.strptime(start_date_str, "%Y-%m-%d %H:%M:%S")
@@ -15,7 +16,8 @@ end_date = datetime.strptime(end_date_str, "%Y-%m-%d %H:%M:%S")
 difference = start_date - end_date
 nb_seconds = difference.total_seconds()
 
-path = os.path.join('app','config.py', Config.coords_file)
+#utilisation fichier json coords
+path = os.path.join('app', Config.coords_file)
 json_file = open(path,'r')
 json_string = json_file.read()
 json_file.close()
@@ -27,7 +29,7 @@ def quit():
     pygame.quit()
     sys.exit()
 
-def main():
+def main(tuple_coords):
     # Create a clock object
     clock = pygame.time.Clock()
     pygame.init()
@@ -59,12 +61,15 @@ def main():
                     quit()
 
         for _ in range(10000):
-            x = random.randint(0, Config.SCREEN_WIDTH - 1)
-            y = random.randint(0, Config.SCREEN_HEIGHT - 1)
-                        
-            color = surf2.get_at((x, y))
-            
-            surf1.set_at((x, y), color)
+            if tuple_coords:
+                (x, y) = tuple_coords[0]
+                tuple_coords = tuple_coords[1:]
+
+                color = surf2.get_at((x, y))
+                
+                surf1.set_at((x, y), color)
+            else:
+                break
             
 
         # Update the game state
@@ -76,7 +81,7 @@ def main():
         # Limit the FPS by sleeping for the remainder of the frame time
         clock.tick(Config.desired_fps)
         
-main()
+main(tuple_coords)
 
 #selctionner pixels pour changer en couleur (prog du prof)
 #créer des frames précises avec un changement d'un certains nombres de pixels précis
