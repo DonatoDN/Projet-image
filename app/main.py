@@ -64,7 +64,7 @@ def main(tuple_coords):
                 if event.key == K_q:
                     quit()
 
-        for _ in range(10000):
+        for _ in range(100):
             if tuple_coords:
                 (x, y) = tuple_coords[0]
                 tuple_coords = tuple_coords[1:]
