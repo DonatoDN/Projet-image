@@ -7,6 +7,7 @@ from config import Config
 from pygame.locals import *
 import json
 from datetime import datetime
+from coords import Coords
 
 #calcul date
 start_date_str = Config.start_dt
@@ -15,6 +16,9 @@ start_date = datetime.strptime(start_date_str, "%Y-%m-%d %H:%M:%S")
 end_date = datetime.strptime(end_date_str, "%Y-%m-%d %H:%M:%S")
 difference = start_date - end_date
 nb_seconds = difference.total_seconds()
+
+#création du fichier coords.json
+Coords()
 
 #utilisation fichier json coords
 path = os.path.join('app', Config.coords_file)
