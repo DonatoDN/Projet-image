@@ -15,7 +15,10 @@ end_date_str = Config.end_dt
 start_date = datetime.strptime(start_date_str, "%Y-%m-%d %H:%M:%S")
 end_date = datetime.strptime(end_date_str, "%Y-%m-%d %H:%M:%S")
 difference = start_date - end_date
-nb_seconds = difference.total_seconds()
+total_time = difference.total_seconds()
+
+#nombre pixels par seconde
+frequency = total_time / Config.desired_fps
 
 #création du fichier coords.json
 Coords()
@@ -64,16 +67,15 @@ def main(tuple_coords):
                 if event.key == K_q:
                     quit()
 
-        for _ in range(100):
-            if tuple_coords:
-                (x, y) = tuple_coords[0]
-                tuple_coords = tuple_coords[1:]
+        if tuple_coords:
+            (x, y) = tuple_coords[0]
+            tuple_coords = tuple_coords[1:]
 
-                color = surf2.get_at((x, y))
+            color = surf2.get_at((x, y))
                 
-                surf1.set_at((x, y), color)
-            else:
-                break
+            surf1.set_at((x, y), color)
+        else:
+            break
             
 
         # Update the game state
