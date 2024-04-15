@@ -35,12 +35,18 @@ json_file.close()
 
 tuple_coords = [tuple(coords) for coords in json.loads(json_string)]
 
+liste_backup = tuple_coords
+
 
 def quit():
     pygame.quit()
     sys.exit()
 
 def main(tuple_coords):
+    #attendre la bonne date pour commencer
+    while time.time() < start_date:
+        time.sleep(1)
+    
     # Create a clock object
     clock = pygame.time.Clock()
     pygame.init()
@@ -74,6 +80,7 @@ def main(tuple_coords):
             for i in range(math.floor(frequency)):
                 if tuple_coords:
                     (x, y) = tuple_coords[0]
+                    liste_backup.append(tuple_coords[0])
                     tuple_coords = tuple_coords[1:]
 
                     color = surf2.get_at((x, y))
@@ -99,7 +106,6 @@ def main(tuple_coords):
         if tuple_coords:
             (x, y) = tuple_coords[0]
             tuple_coords = tuple_coords[1:]
-
             color = surf2.get_at((x, y))
                 
             surf1.set_at((x, y), color)
