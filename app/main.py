@@ -8,6 +8,7 @@ from pygame.locals import *
 import json
 from datetime import datetime
 from coords import Coords
+import math
 
 #calcul date
 start_date_str = Config.start_dt
@@ -18,7 +19,10 @@ difference = start_date - end_date
 total_time = difference.total_seconds()
 
 #nombre pixels par seconde
-frequency = total_time / Config.desired_fps
+nb_pixels = Config.SCREEN_HEIGHT * Config.SCREEN_WIDTH
+frequency = nb_pixels / (total_time * Config.desired_fps)
+difference_pixels = nb_pixels - math.floor(frequency) * Config.desired_fps * total_time
+nb_changes = Config.desired_fps * total_time
 
 #création du fichier coords.json
 Coords()
@@ -50,12 +54,10 @@ def main(tuple_coords):
         print(f"{str(e)}")
         quit()
         
-    nb_pixels = Config.SCREEN_HEIGHT * Config.SCREEN_WIDTH
-    
     print("nb pixels", nb_pixels)
         
     # Start the main loop
-    while True:
+    for i in range(nb_changes - 1):
         # Get events from the event queue
         for event in pygame.event.get():
             # Check for the quit event
@@ -66,14 +68,19 @@ def main(tuple_coords):
                 # quit when Q is pressed
                 if event.key == K_q:
                     quit()
-
+        
+        #changer les pixels un nombre entier de fois
         if tuple_coords:
-            (x, y) = tuple_coords[0]
-            tuple_coords = tuple_coords[1:]
+            for i in range(math.floor(frequency)):
+                if tuple_coords:
+                    (x, y) = tuple_coords[0]
+                    tuple_coords = tuple_coords[1:]
 
-            color = surf2.get_at((x, y))
+                    color = surf2.get_at((x, y))
                 
-            surf1.set_at((x, y), color)
+                    surf1.set_at((x, y), color)
+                else:
+                    break
         else:
             break
             
@@ -86,9 +93,20 @@ def main(tuple_coords):
 
         # Limit the FPS by sleeping for the remainder of the frame time
         clock.tick(Config.desired_fps)
-        
+    
+    #rajouter les pixels manquants
+    for i in range(difference_pixels):
+        if tuple_coords:
+            (x, y) = tuple_coords[0]
+            tuple_coords = tuple_coords[1:]
+
+            color = surf2.get_at((x, y))
+                
+            surf1.set_at((x, y), color)
+        else:
+            break
 main(tuple_coords)
 
-#selctionner pixels pour changer en couleur (prog du prof)
-#créer des frames précises avec un changement d'un certains nombres de pixels précis
+
+#attendre la bonne date pour exécuter
 #faire le backup
