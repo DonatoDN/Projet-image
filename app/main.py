@@ -10,19 +10,10 @@ from datetime import datetime
 from coords import Coords
 import math
 
-#calcul date
-start_date_str = Config.start_dt
-end_date_str = Config.end_dt
-start_date = datetime.strptime(start_date_str, "%Y-%m-%d %H:%M:%S")
-end_date = datetime.strptime(end_date_str, "%Y-%m-%d %H:%M:%S")
-difference = start_date - end_date
-total_time = difference.total_seconds()
 
 #nombre pixels par seconde
 nb_pixels = Config.SCREEN_HEIGHT * Config.SCREEN_WIDTH
-frequency = nb_pixels / (total_time * Config.desired_fps)
-difference_pixels = nb_pixels - math.floor(frequency) * Config.desired_fps * total_time
-nb_changes = Config.desired_fps * total_time
+
 
 #création du fichier coords.json
 Coords()
@@ -35,18 +26,35 @@ json_file.close()
 
 tuple_coords = [tuple(coords) for coords in json.loads(json_string)]
 
-liste_backup = tuple_coords
-
 
 def quit():
     pygame.quit()
     sys.exit()
 
 def main(tuple_coords):
+
+    #calcul date
+    start_date_str = Config.start_dt
+    end_date_str = Config.end_dt
+    start_date = time.mktime(time.strptime(start_date_str, "%Y-%m-%d %H:%M:%S"))
+    end_date = time.mktime(time.strptime(end_date_str, "%Y-%m-%d %H:%M:%S"))
+    
+    
+
     #attendre la bonne date pour commencer
     while time.time() < start_date:
         time.sleep(1)
     
+    #date actualisée, utilisable aussi en cas de crash
+    today_date = time.time()
+    total_time = end_date - today_date
+
+    
+
+    frequency = nb_pixels / (total_time * Config.desired_fps)
+    difference_pixels = nb_pixels - math.floor(frequency) * Config.desired_fps * total_time
+    nb_changes = Config.desired_fps * total_time
+
     # Create a clock object
     clock = pygame.time.Clock()
     pygame.init()
@@ -80,7 +88,6 @@ def main(tuple_coords):
             for i in range(math.floor(frequency)):
                 if tuple_coords:
                     (x, y) = tuple_coords[0]
-                    liste_backup.append(tuple_coords[0])
                     tuple_coords = tuple_coords[1:]
 
                     color = surf2.get_at((x, y))
@@ -111,8 +118,8 @@ def main(tuple_coords):
             surf1.set_at((x, y), color)
         else:
             break
+
+
 main(tuple_coords)
 
-
-#attendre la bonne date pour exécuter
-#faire le backup
+#Le code a été entièrement écrit ensemble soit en appel, soit en présentiel, plus  de détails concernant qui a réfléchi à quoi dans le readme.
